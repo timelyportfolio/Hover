@@ -29,9 +29,11 @@ svgDiag %>>%
   getNodeSet("//g[contains(@class,'node')]") %>>%
   lapply(
     function(el){
-      addAttributes( el, "class" = "node hvr-float-shadow", "style" = "pointer-events:all;")
-      #removeChildren(el, kids = list(xmlChildren(el)$title))
-      invisible(return(NULL))
+      addAttributes( el, "class" = "node hvr-float", "style" = "pointer-events:all;")
+      if(length(xmlChildren(el)$title)>0){
+        removeChildren(el, kids = list(xmlChildren(el)$title))
+      }
+      return(NULL)
     }
   )
 
@@ -46,7 +48,13 @@ svgDiag %>>%
       ,stylesheet = "hover.css"
     )
   ) %>>%
-  html_print
-  
-  
-  
+  html_print %>>%
+~htF
+
+
+#library(gistr)
+#gist_auth(reauth=T)
+#gist_create(
+#  list.files(dirname(htF),full.names=T,recursive=T)
+#  ,description = "hover.css applied to DiagrammeR grViz"
+#)
